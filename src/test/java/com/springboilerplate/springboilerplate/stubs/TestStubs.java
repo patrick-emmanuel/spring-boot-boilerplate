@@ -11,6 +11,10 @@ public class TestStubs {
         return new User("Patrick", "Emmanuel",
                 "Password", "email@email.com", generateRole());
     }
+    public static User generateUserWithNoRole(){
+        return new User("Patrick", "Emmanuel",
+                "Password", "email@email.com");
+    }
 
     public static UserDto generateUserDto(){
         return new UserDto("Patrick", "Emmanuel",
