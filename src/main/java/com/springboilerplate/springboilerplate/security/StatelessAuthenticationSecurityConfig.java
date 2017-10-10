@@ -35,11 +35,13 @@ public class StatelessAuthenticationSecurityConfig extends WebSecurityConfigurer
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.exceptionHandling().and().anonymous().and().servletApi().and().headers().cacheControl();
+        http.exceptionHandling().and().anonymous()
+                .and().servletApi().and().headers().cacheControl();
 
         http.authorizeRequests()
                 .antMatchers("/v1/users/register").permitAll()
-                .antMatchers("v1/**").authenticated()
+                .antMatchers("/v1/**").authenticated()
+                .antMatchers("/v1/users/*").authenticated()
                 .and()
                 .addFilterBefore(new JwtLoginFilter("/login", authenticationManager(),
                                 tokenAuthenticationService, userService),

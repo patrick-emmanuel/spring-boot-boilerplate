@@ -9,6 +9,6 @@ import static org.mockito.Mockito.when;
 public class RoleMocks {
 
     public void initMocks(RoleRepository roleRepository){
-        when(roleRepository.findByName(anyString())).thenReturn(TestStubs.generateRole());
+        when(roleRepository.findByName(anyString())).thenReturn(TestStubs.generateOptionalRole());
     }
 }

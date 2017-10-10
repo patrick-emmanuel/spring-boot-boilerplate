@@ -13,6 +13,8 @@ import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -44,8 +46,8 @@ public class UserServiceImpl implements UserService{
     }
 
     private User setUserRole(User user, RoleType roleType){
-        Role role = roleRepository.findByName(roleType.name());
-        user.setRole(role);
+        Optional<Role> optionalRole = roleRepository.findByName(roleType.name());
+        optionalRole.ifPresent(user::setRole);
         return userRepository.saveAndFlush(user);
     }
 }

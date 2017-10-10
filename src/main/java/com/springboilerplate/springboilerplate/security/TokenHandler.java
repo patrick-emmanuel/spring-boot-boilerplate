@@ -1,8 +1,13 @@
 package com.springboilerplate.springboilerplate.security;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
 import com.springboilerplate.springboilerplate.model.User;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import org.springframework.stereotype.Component;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -13,8 +18,8 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Date;
-
 public class TokenHandler {
+
     private static final String HMAC_ALGO = "HmacSHA256";
     private static final String SEPARATOR = ".";
     private static final String SEPARATOR_SPLITTER = "\\.";
@@ -61,9 +66,18 @@ public class TokenHandler {
         return sb.toString();
     }
 
+    public ObjectMapper jsonObjectMapper() {
+        return Jackson2ObjectMapperBuilder.json()
+                .serializationInclusion(JsonInclude.Include.NON_NULL)
+                .featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+                .modules(new JSR310Module())
+                .build();
+    }
+
     private User fromJSON(final byte[] userBytes) {
         try {
-            return new ObjectMapper().readValue(new ByteArrayInputStream(userBytes), User.class);
+            ObjectMapper objectMapper = jsonObjectMapper();
+            return objectMapper.readValue(new ByteArrayInputStream(userBytes), User.class);
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
@@ -71,7 +85,8 @@ public class TokenHandler {
 
     private byte[] toJSON(User user) {
         try {
-            return new ObjectMapper().writeValueAsBytes(user);
+            ObjectMapper objectMapper = jsonObjectMapper();
+            return objectMapper.writeValueAsBytes(user);
         } catch (JsonProcessingException e) {
             throw new IllegalStateException(e);
         }

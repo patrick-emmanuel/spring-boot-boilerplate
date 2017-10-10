@@ -4,7 +4,6 @@ import com.springboilerplate.springboilerplate.model.User;
 import com.springboilerplate.springboilerplate.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.Cookie;

@@ -5,6 +5,8 @@ import com.springboilerplate.springboilerplate.enums.RoleType;
 import com.springboilerplate.springboilerplate.model.Role;
 import com.springboilerplate.springboilerplate.model.User;
 
+import java.util.Optional;
+
 public class TestStubs {
 
     public static User generateUser(){
@@ -23,5 +25,8 @@ public class TestStubs {
 
     public static Role generateRole(){
         return new Role(RoleType.USER.name());
+    }
+    public static Optional<Role> generateOptionalRole(){
+        return Optional.of(new Role(RoleType.USER.name()));
     }
 }

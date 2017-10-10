@@ -14,7 +14,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Optional;
 
-import static org.junit.Assert.*;
 @RunWith(SpringRunner.class)
 @DataJpaTest
 public class UserRepositoryTest {
@@ -34,10 +33,11 @@ public class UserRepositoryTest {
     public void getByEmailShouldReturnUser() throws Exception {
         entityManager.persistAndFlush(userToSave);
 
-        Optional<User> user = userRepository.getByEmail("email@email.com");
+        Optional<User> optionalUser = userRepository.getByEmail("email@email.com");
 
-        assertThat(user.isPresent()).isTrue();
-        assertThat(user.get().getEmail()).isEqualTo(userToSave.getEmail());
+        assertThat(optionalUser.isPresent()).isTrue();
+        assertThat(optionalUser.map(User::getEmail).orElse("No email"))
+                .isEqualTo(userToSave.getEmail());
     }
 
     @Test

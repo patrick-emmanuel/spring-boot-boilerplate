@@ -4,12 +4,12 @@ import com.springboilerplate.springboilerplate.dto.UserDto;
 import com.springboilerplate.springboilerplate.model.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class UserDtoMapper {
 
     private ModelMapper modelMapper;
-
-    @Autowired
     public UserDtoMapper(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
     }
