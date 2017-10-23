@@ -3,7 +3,6 @@ package com.springboilerplate.springboilerplate.mapper;
 import com.springboilerplate.springboilerplate.dto.UserDto;
 import com.springboilerplate.springboilerplate.model.User;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
