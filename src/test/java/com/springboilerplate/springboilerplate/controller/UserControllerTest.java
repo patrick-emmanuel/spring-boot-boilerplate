@@ -70,7 +70,7 @@ public class UserControllerTest {
     @Before
     @Rollback
     public void setup() throws Exception {
-        userRepository.saveAndFlush(new User("User", "Patrick", "user@yahoo.com",
+        userRepository.save(new User("User", "Patrick", "user@yahoo.com",
                 "17e5b5d9c47c4665151de2a6942484a2a5af8f522a8336d9356cdd99ebdb088e1ab23e296c5094d9"));
         this.mockMvc = webAppContextSetup(webApplicationContext)
                 .addFilter(springSecurityFilter, "/*").build();

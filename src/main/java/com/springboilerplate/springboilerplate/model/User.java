@@ -30,9 +30,9 @@ public class User implements UserDetails{
     @Transient
     private long expires;
     private LocalDateTime lastLogin = now;
-    private boolean enabled = true;
     private LocalDateTime createdAt = now;
     private LocalDateTime modifiedAt = now;
+    private boolean enabled = true;
     private boolean deleted = false;
 
     public User(String firstname, String lastname, String password, String email, Role role) {

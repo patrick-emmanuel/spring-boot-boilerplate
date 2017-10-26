@@ -48,6 +48,6 @@ public class UserServiceImpl implements UserService{
     private User setUserRole(User user, RoleType roleType){
         Optional<Role> optionalRole = roleRepository.findByName(roleType.name());
         optionalRole.ifPresent(user::setRole);
-        return userRepository.saveAndFlush(user);
+        return userRepository.save(user);
     }
 }
