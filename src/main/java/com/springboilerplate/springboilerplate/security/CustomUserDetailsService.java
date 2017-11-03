@@ -29,7 +29,7 @@ public class CustomUserDetailsService implements CustomUserService{
     }
 
     private User reflectLogin(User user) {
-        //user.setLastLogin(LocalDateTime.now());
+        user.setLastLogin(LocalDateTime.now());
         return userRepository.save(user);
     }
 }

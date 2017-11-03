@@ -35,14 +35,15 @@ public class UserServiceImpl implements UserService{
     @Override
     public User saveUser(UserDto userDto, RoleType roleType) {
         User user = userDtoMapper.toUser(userDto);
-        encodeAndSetUserPassword(user);
+        String encodedPassword = encodeUserPassword(user);
+        user.setPassword(encodedPassword);
         return setUserRole(user, roleType);
     }
 
-    private void encodeAndSetUserPassword(User user){
+    private String encodeUserPassword(User user){
         String passwordKey = environment.getProperty(EnvironmentConstants.PASSWORD_KEY);
         StandardPasswordEncoder encoder = new StandardPasswordEncoder(passwordKey);
-        user.setPassword(encoder.encode(user.getPassword().trim()));
+        return encoder.encode(user.getPassword().trim());
     }
 
     private User setUserRole(User user, RoleType roleType){
