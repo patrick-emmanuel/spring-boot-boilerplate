@@ -14,18 +14,22 @@ import java.util.Optional;
 @Transactional
 public class CustomUserDetailsService implements CustomUserService{
 
-    @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    public CustomUserDetailsService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> optionalUser = userRepository.getByEmailAndDeletedFalse(username);
-        optionalUser.ifPresent(this::reflectLogin);
-        throw new UsernameNotFoundException("User with  '" + username + "' email not found.");
+        return optionalUser.map(this::reflectLogin)
+                .orElseThrow(() ->  new UsernameNotFoundException("User with  '" + username + "' email not found."));
     }
 
     private User reflectLogin(User user) {
-        //user.setLastLogin(LocalDateTime.now());
-        return userRepository.saveAndFlush(user);
+        user.setLastLogin(LocalDateTime.now());
+        return userRepository.save(user);
     }
 }

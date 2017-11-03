@@ -1,7 +1,8 @@
 package com.springboilerplate.springboilerplate.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.hibernate.search.annotations.*;
+import org.hibernate.search.annotations.Index;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,22 +18,21 @@ import java.util.List;
 
 @Entity
 @Table(name="users")
+@Indexed
 public class User implements UserDetails{
     @Transient
     private LocalDateTime now = LocalDateTime.now();
-
     private Long id;
     private String firstname;
     private String lastname;
     private String password;
     private String email;
     private Role role;
-    @Transient
     private long expires;
     private LocalDateTime lastLogin = now;
-    private boolean enabled = true;
     private LocalDateTime createdAt = now;
     private LocalDateTime modifiedAt = now;
+    private boolean enabled = true;
     private boolean deleted = false;
 
     public User(String firstname, String lastname, String password, String email, Role role) {
@@ -55,6 +55,7 @@ public class User implements UserDetails{
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @DocumentId
     @Column(name="id", unique = true)
     public Long getId() {
         return id;
@@ -67,6 +68,7 @@ public class User implements UserDetails{
     @NotNull
     @Size(min=2, max=30, message="The length of firstname should be within the range of 2 to 30.")
     @Column(name = "firstname")
+    @Field(index= Index.YES, analyze= Analyze.YES, store= Store.NO)
     public String getFirstname() {
         return firstname;
     }
@@ -78,6 +80,7 @@ public class User implements UserDetails{
     @NotNull
     @Size(min=2, max=30, message="The length lastname should be within the range of 2 to 30.")
     @Column(name = "lastname")
+    @Field(index= Index.YES, analyze= Analyze.YES, store= Store.NO)
     public String getLastname() {
         return lastname;
     }
@@ -97,8 +100,10 @@ public class User implements UserDetails{
         this.password = password;
     }
 
+    @NotNull
     @Column(name = "email", unique = true)
     @Email(message = "Email is not valid.")
+    @Field(index= Index.YES, analyze= Analyze.YES, store= Store.NO)
     public String getEmail() {
         return email;
     }
@@ -108,7 +113,7 @@ public class User implements UserDetails{
     }
 
     @ManyToOne
-    @JoinColumn(name="role_id")
+    @JoinColumn(name="role_id", foreignKey = @ForeignKey(name = "FK_users_roles"))
     public Role getRole() {
         return role;
     }
@@ -146,7 +151,7 @@ public class User implements UserDetails{
         this.modifiedAt = modifiedAt;
     }
 
-    @Column(name = "expires")
+    @Transient
     public long getExpires() {
         return expires;
     }

@@ -7,10 +7,12 @@ import com.springboilerplate.springboilerplate.repository.UserRepository;
 import com.springboilerplate.springboilerplate.stubs.TestStubs;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 public class UserMocks {
     public void initMocks(UserRepository userRepository){
-        when(userRepository.saveAndFlush(any(User.class))).thenReturn(TestStubs.generateUser());
+        when(userRepository.save(any(User.class))).thenReturn(TestStubs.generateUser());
+        when(userRepository.getByEmailAndDeletedFalse(anyString())).thenReturn(TestStubs.generateOptionalUser());
     }
 }

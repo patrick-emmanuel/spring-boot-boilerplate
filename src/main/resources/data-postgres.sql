@@ -1,4 +1,4 @@
-INSERT INTO roles (role_name, enabled, deleted)
+INSERT INTO roles (name, enabled, deleted)
 VALUES
-    ('USER', TRUE , FALSE),
+    ('USsER', TRUE , FALSE),
     ('ADMIN', TRUE , FALSE);

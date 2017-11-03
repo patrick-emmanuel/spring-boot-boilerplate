@@ -13,6 +13,16 @@ public class TestStubs {
         return new User("Patrick", "Emmanuel",
                 "Password", "email@email.com", generateRole());
     }
+
+    public static User generateUser(int i){
+        return new User("Patrick" + i, "Emmanuel" + i,
+                "Password", "email@email.com" + i, generateRole());
+    }
+
+    public static Optional<User> generateOptionalUser(){
+        return Optional.of(new User("Patrick", "Emmanuel",
+                "Password", "email@email.com", generateRole()));
+    }
     public static User generateUserWithNoRole(){
         return new User("Patrick", "Emmanuel",
                 "Password", "email@email.com");

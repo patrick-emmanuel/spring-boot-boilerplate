@@ -1,10 +1,12 @@
 package com.springboilerplate.springboilerplate.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import org.hibernate.search.annotations.DocumentId;
 
 @Entity
 @Table(name="roles")
@@ -31,6 +33,7 @@ public class Role {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @DocumentId
     @Column(name="id")
     public Long getId() {
         return id;
@@ -40,7 +43,8 @@ public class Role {
         this.id = id;
     }
 
-    @Column(name="role_name", unique = true)
+    @NotNull
+    @Column(name="name", unique = true)
     public String getName() {
         return name;
     }
@@ -67,7 +71,7 @@ public class Role {
         this.deleted = deleted;
     }
 
-    @Column
+    @Column(name = "created_at")
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -76,7 +80,7 @@ public class Role {
         this.createdAt = createdAt;
     }
 
-    @Column
+    @Column(name = "modified_at")
     public LocalDateTime getModifiedAt() {
         return modifiedAt;
     }
