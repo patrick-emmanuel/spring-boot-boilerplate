@@ -35,8 +35,6 @@ public class UserController {
     @PostMapping(path="/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody UserDto user) throws Exception {
         final User registeredUser = userService.saveUser(user, RoleType.USER);
-        //move this line of code to the service.
-        registeredUser.setExpires(System.currentTimeMillis() + TokenAuthenticationService.TEN_DAYS);
         String token = tokenAuthenticationService.createUserToken(registeredUser);
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set(TokenAuthenticationService.AUTH_HEADER_NAME, token);

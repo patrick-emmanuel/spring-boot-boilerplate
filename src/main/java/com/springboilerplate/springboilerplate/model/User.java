@@ -1,6 +1,7 @@
 package com.springboilerplate.springboilerplate.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Where;
 import org.hibernate.search.annotations.*;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.validator.constraints.Email;
@@ -19,6 +20,7 @@ import java.util.List;
 @Entity
 @Table(name="users")
 @Indexed
+@Where(clause = "deleted = false")
 public class User implements UserDetails{
     @Transient
     private LocalDateTime now = LocalDateTime.now();
