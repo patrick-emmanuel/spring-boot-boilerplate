@@ -2,7 +2,8 @@ package com.springboilerplate.springboilerplate.mapper;
 
 import com.springboilerplate.springboilerplate.dto.UserDto;
 import com.springboilerplate.springboilerplate.model.User;
-import com.springboilerplate.springboilerplate.stubs.TestStubs;
+import com.springboilerplate.springboilerplate.stubs.PasswordResetTokenStubs;
+import com.springboilerplate.springboilerplate.stubs.UserStubs;
 import org.junit.Before;
 import org.junit.Test;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -18,8 +19,8 @@ public class UserDtoMapperTest {
 
     @Before
     public void setUp() throws Exception {
-        user = TestStubs.generateUser();
-        userDto = TestStubs.generateUserDto();
+        user = UserStubs.generateUser();
+        userDto = UserStubs.generateUserDto();
     }
 
     @Test

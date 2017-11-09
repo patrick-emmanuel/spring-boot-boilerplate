@@ -10,7 +10,8 @@ import com.springboilerplate.springboilerplate.mocks.UserMocks;
 import com.springboilerplate.springboilerplate.model.User;
 import com.springboilerplate.springboilerplate.repository.RoleRepository;
 import com.springboilerplate.springboilerplate.repository.UserRepository;
-import com.springboilerplate.springboilerplate.stubs.TestStubs;
+import com.springboilerplate.springboilerplate.stubs.PasswordResetTokenStubs;
+import com.springboilerplate.springboilerplate.stubs.UserStubs;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -52,7 +53,7 @@ public class UserServiceImplTest {
 
     @Test
     public void saveUserShouldSave() throws Exception {
-        UserDto userDto = TestStubs.generateUserDto();
+        UserDto userDto = UserStubs.generateUserDto();
         User user = userService.saveUser(userDto, RoleType.USER);
 
         assertThat(user).isNotNull();
