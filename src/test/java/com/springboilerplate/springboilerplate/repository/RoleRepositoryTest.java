@@ -2,7 +2,8 @@ package com.springboilerplate.springboilerplate.repository;
 
 import com.springboilerplate.springboilerplate.enums.RoleType;
 import com.springboilerplate.springboilerplate.model.Role;
-import com.springboilerplate.springboilerplate.stubs.TestStubs;
+import com.springboilerplate.springboilerplate.stubs.PasswordResetTokenStubs;
+import com.springboilerplate.springboilerplate.stubs.RoleStubs;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,7 +31,7 @@ public class RoleRepositoryTest {
 
     @Before
     public void setUp() throws Exception {
-        roleToPersist = TestStubs.generateRole();
+        roleToPersist = RoleStubs.generateRole();
     }
 
 

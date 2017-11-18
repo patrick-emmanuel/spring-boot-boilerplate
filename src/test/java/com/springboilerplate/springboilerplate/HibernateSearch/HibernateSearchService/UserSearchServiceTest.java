@@ -5,7 +5,6 @@ import com.springboilerplate.springboilerplate.mocks.DataGenerator;
 import com.springboilerplate.springboilerplate.model.User;
 import com.springboilerplate.springboilerplate.repository.RoleRepository;
 import com.springboilerplate.springboilerplate.repository.UserRepository;
-import com.springboilerplate.springboilerplate.stubs.TestStubs;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

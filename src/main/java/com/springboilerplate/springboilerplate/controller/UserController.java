@@ -6,7 +6,6 @@ import com.springboilerplate.springboilerplate.dto.UserDto;
 import com.springboilerplate.springboilerplate.model.User;
 import com.springboilerplate.springboilerplate.security.TokenAuthenticationService;
 import com.springboilerplate.springboilerplate.service.UserService;
-import com.sun.xml.internal.bind.v2.TODO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -35,8 +34,6 @@ public class UserController {
     @PostMapping(path="/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody UserDto user) throws Exception {
         final User registeredUser = userService.saveUser(user, RoleType.USER);
-        //move this line of code to the service.
-        registeredUser.setExpires(System.currentTimeMillis() + TokenAuthenticationService.TEN_DAYS);
         String token = tokenAuthenticationService.createUserToken(registeredUser);
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set(TokenAuthenticationService.AUTH_HEADER_NAME, token);

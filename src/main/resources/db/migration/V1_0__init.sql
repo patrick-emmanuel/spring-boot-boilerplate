@@ -9,7 +9,6 @@ CREATE TABLE roles(
     UNIQUE(name)
 );
 
---CREATE sequence hibernate_sequence;
 CREATE TABLE users(
     id BIGSERIAL,
     role_id BIGINT,
@@ -26,4 +25,13 @@ CREATE TABLE users(
     FOREIGN KEY (role_id) REFERENCES roles(id),
     CONSTRAINT users_pkey PRIMARY KEY(id),
     UNIQUE(email)
+);
+CREATE TABLE password_reset_token(
+    id BIGSERIAL,
+    token VARCHAR(255) NOT NULL,
+    expiry_date  TIMESTAMP,
+    user_id BIGINT,
+    CONSTRAINT FK_password_reset_tokens_users
+        FOREIGN KEY (user_id) REFERENCES users(id),
+    CONSTRAINT password_reset_token_pkey PRIMARY KEY(id)
 );

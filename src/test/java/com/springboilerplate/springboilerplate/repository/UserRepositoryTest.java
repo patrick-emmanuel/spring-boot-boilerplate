@@ -1,7 +1,8 @@
 package com.springboilerplate.springboilerplate.repository;
 
 import com.springboilerplate.springboilerplate.model.User;
-import com.springboilerplate.springboilerplate.stubs.TestStubs;
+import com.springboilerplate.springboilerplate.stubs.PasswordResetTokenStubs;
+import com.springboilerplate.springboilerplate.stubs.UserStubs;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,7 +27,7 @@ public class UserRepositoryTest {
 
     @Before
     public void setUp() throws Exception {
-        userToSave  = TestStubs.generateUserWithNoRole();
+        userToSave  = UserStubs.generateUserWithNoRole();
     }
 
     @Test

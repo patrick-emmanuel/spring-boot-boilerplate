@@ -17,4 +17,7 @@ public class HibernateSearchConfig {
     public HibernateSearchService hibernateSearchService(){
         return new HibernateSearchService(entityManager);
     }
+
+
+
 }

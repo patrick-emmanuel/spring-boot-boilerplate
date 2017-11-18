@@ -1,15 +1,9 @@
 package com.springboilerplate.springboilerplate.security;
 
-import com.springboilerplate.springboilerplate.model.Role;
 import com.springboilerplate.springboilerplate.model.User;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 public class UserAuthentication implements Authentication {
         private static final long serialVersionUID = 4161658715015553004L;

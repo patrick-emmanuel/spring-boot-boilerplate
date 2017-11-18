@@ -5,7 +5,9 @@ import com.springboilerplate.springboilerplate.model.Role;
 import com.springboilerplate.springboilerplate.model.User;
 import com.springboilerplate.springboilerplate.repository.RoleRepository;
 import com.springboilerplate.springboilerplate.repository.UserRepository;
-import com.springboilerplate.springboilerplate.stubs.TestStubs;
+import com.springboilerplate.springboilerplate.stubs.PasswordResetTokenStubs;
+import com.springboilerplate.springboilerplate.stubs.RoleStubs;
+import com.springboilerplate.springboilerplate.stubs.UserStubs;
 
 import java.util.Optional;
 
@@ -32,12 +34,12 @@ public class DataGenerator {
     }
 
     public User createUser(int i) {
-        User user = TestStubs.generateUser(i);
+        User user = UserStubs.generateUser(i);
         return userRepository.save(user);
     }
 
     public User createUser() {
-        User user = TestStubs.generateUser();
+        User user = UserStubs.generateUser();
         user.setRole(createRole(RoleType.USER));
         return userRepository.save(user);
     }
@@ -47,7 +49,7 @@ public class DataGenerator {
         if(optionalRole.isPresent()){
             return optionalRole.get();
         }
-        Role role = TestStubs.generateRole();
+        Role role = RoleStubs.generateRole();
         return roleRepository.saveAndFlush(role);
     }
 }
