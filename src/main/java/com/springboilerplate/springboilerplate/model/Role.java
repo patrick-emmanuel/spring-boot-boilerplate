@@ -34,7 +34,7 @@ public class Role {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @DocumentId
-    @Column(name="id")
+    @Column(name="role_id")
     public Long getId() {
         return id;
     }

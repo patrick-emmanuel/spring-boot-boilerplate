@@ -22,3 +22,6 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
+
+#Hibernate search's indexes.
+com.springboilerplate.springboilerplate.model.User

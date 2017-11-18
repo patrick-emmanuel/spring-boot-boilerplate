@@ -1,9 +1,6 @@
 package com.springboilerplate.springboilerplate.stubs;
 
-import com.springboilerplate.springboilerplate.dto.UserDto;
-import com.springboilerplate.springboilerplate.enums.RoleType;
 import com.springboilerplate.springboilerplate.model.PasswordResetToken;
-import com.springboilerplate.springboilerplate.model.Role;
 import com.springboilerplate.springboilerplate.model.User;
 
 import java.util.Optional;
