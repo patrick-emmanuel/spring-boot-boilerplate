@@ -58,7 +58,7 @@ public class User implements UserDetails{
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @DocumentId
-    @Column(name="id", unique = true)
+    @Column(name="user_id", unique = true)
     public Long getId() {
         return id;
     }

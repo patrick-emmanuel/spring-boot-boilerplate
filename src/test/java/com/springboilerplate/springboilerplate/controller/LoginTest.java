@@ -34,10 +34,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = { SpringBoilerplateApplication.class})
+@SpringBootTest
 @WebAppConfiguration
 @Transactional
-public class UserControllerTest {
+public class LoginTest {
     @Autowired
     private FilterChainProxy springSecurityFilter;
     @Autowired
