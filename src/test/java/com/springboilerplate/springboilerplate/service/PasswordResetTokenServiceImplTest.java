@@ -63,7 +63,7 @@ public class PasswordResetTokenServiceImplTest {
     @Test
     public void validatePasswordShouldReturnTrueWhenTokenIsValid() throws Exception {
 
-        boolean valid = passwordResetTokenService.validatePassword(1L, "token");
+        boolean valid = passwordResetTokenService.validateResetToken(1L, "token");
 
         assertThat(valid).isTrue();
         verify(securityHelper).grantUserChangePasswordPrivilege(any(PasswordResetToken.class));
@@ -76,7 +76,7 @@ public class PasswordResetTokenServiceImplTest {
         optionalToken.get().setExpiryDate(Instant.now().minusSeconds(84000L));
         when(passwordResetTokenRepository.findByToken(anyString())).thenReturn(optionalToken);
 
-        boolean valid = passwordResetTokenService.validatePassword(1L, "token");
+        boolean valid = passwordResetTokenService.validateResetToken(1L, "token");
 
         assertThat(valid).isFalse();
     }
@@ -85,7 +85,7 @@ public class PasswordResetTokenServiceImplTest {
     public void validatePasswordShouldReturnFalseWhenTokenIsNull() throws Exception {
         when(passwordResetTokenRepository.findByToken(anyString())).thenReturn(Optional.empty());
 
-        boolean valid = passwordResetTokenService.validatePassword(1L, "token");
+        boolean valid = passwordResetTokenService.validateResetToken(1L, "token");
 
         assertThat(valid).isFalse();
         verify(passwordResetTokenRepository).findByToken(anyString());
@@ -95,7 +95,7 @@ public class PasswordResetTokenServiceImplTest {
     public void validatePasswordShouldReturnFalseWhenIdDontMatch() throws Exception {
         when(passwordResetTokenRepository.findByToken(anyString())).thenReturn(Optional.empty());
 
-        boolean valid = passwordResetTokenService.validatePassword(100L, "token");
+        boolean valid = passwordResetTokenService.validateResetToken(100L, "token");
 
         assertThat(valid).isFalse();
         verify(passwordResetTokenRepository).findByToken(anyString());

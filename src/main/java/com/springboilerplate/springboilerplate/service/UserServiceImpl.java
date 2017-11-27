@@ -1,6 +1,7 @@
 package com.springboilerplate.springboilerplate.service;
 
 import com.springboilerplate.springboilerplate.constants.EnvironmentConstants;
+import com.springboilerplate.springboilerplate.dto.PasswordDto;
 import com.springboilerplate.springboilerplate.dto.UserDto;
 import com.springboilerplate.springboilerplate.enums.RoleType;
 import com.springboilerplate.springboilerplate.mapper.UserDtoMapper;
@@ -44,6 +45,12 @@ public class UserServiceImpl implements UserService{
         String passwordKey = environment.getProperty(EnvironmentConstants.PASSWORD_KEY);
         StandardPasswordEncoder encoder = new StandardPasswordEncoder(passwordKey);
         return encoder.encode(user.getPassword().trim());
+    }
+
+    @Override
+    public void changeUserPassword(User user, PasswordDto passwordDto){
+        user.setPassword(passwordDto.getNewPassword());
+        userRepository.save(user);
     }
 
     private User setUserRole(User user, RoleType roleType){

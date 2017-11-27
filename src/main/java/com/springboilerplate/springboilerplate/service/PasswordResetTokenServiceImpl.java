@@ -36,7 +36,7 @@ public class PasswordResetTokenServiceImpl implements PasswordResetTokenService 
     }
 
     @Override
-    public boolean validatePassword(Long userId, String tokenValue) {
+    public boolean validateResetToken(Long userId, String tokenValue) {
         Optional<PasswordResetToken> optionalToken = passwordTokenRepository.findByToken(tokenValue);
         boolean validToken = optionalToken
                 .filter(userToken -> !isTokenExpired(userToken))
