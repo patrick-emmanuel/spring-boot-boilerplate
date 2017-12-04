@@ -24,17 +24,12 @@ import java.util.List;
 public class UserController {
 
     private UserService userService;
-    private TokenAuthenticationService tokenAuthenticationService;
     private UserSearchService userSearchService;
-    private PasswordResetTokenService passwordResetTokenService;
 
     @Autowired
-    public UserController(UserService userService, TokenAuthenticationService tokenAuthenticationService,
-                          UserSearchService userSearchService, PasswordResetTokenService passwordResetTokenService) {
+    public UserController(UserService userService, UserSearchService userSearchService) {
         this.userService = userService;
-        this.tokenAuthenticationService = tokenAuthenticationService;
         this.userSearchService = userSearchService;
-        this.passwordResetTokenService = passwordResetTokenService;
     }
 
     @PostMapping(path="/register")
@@ -54,21 +49,6 @@ public class UserController {
     @GetMapping(path = "/hello")
     public String getHello(){
         return "hello";
-    }
-
-    @PostMapping(value = "/resetPassword")
-    public ResponseEntity<?> resetPassword() throws Exception{
-        User user = SecurityUtils.getLoggedInUser();
-        passwordResetTokenService.createPasswordResetTokenForUser(user);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    //If successfully validated, then the user can update his password.
-    @PostMapping(value = "/validateToken")
-    public ResponseEntity<Boolean> validateUserPassword(@RequestParam("id") long id,
-                                                        @RequestParam("token") String token) {
-        boolean valid = passwordResetTokenService.validateResetToken(id, token);
-        return new ResponseEntity<>(valid, HttpStatus.OK);
     }
 
     @PostMapping(value = "/savePassword")

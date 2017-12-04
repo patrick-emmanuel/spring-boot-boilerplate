@@ -1,4 +1,4 @@
-package com.springboilerplate.springboilerplate.security;
+package com.springboilerplate.springboilerplate.dto;
 
 public class AccountCredentials {
     private String email;

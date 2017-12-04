@@ -1,18 +1,14 @@
 package com.springboilerplate.springboilerplate.controller;
 
-import com.springboilerplate.springboilerplate.SpringBoilerplateApplication;
-import com.springboilerplate.springboilerplate.mocks.DataGenerator;
 import com.springboilerplate.springboilerplate.model.User;
-import com.springboilerplate.springboilerplate.repository.RoleRepository;
 import com.springboilerplate.springboilerplate.repository.UserRepository;
-import com.springboilerplate.springboilerplate.security.AccountCredentials;
+import com.springboilerplate.springboilerplate.dto.AccountCredentials;
 import com.springboilerplate.springboilerplate.stubs.UserStubs;
 import com.springboilerplate.springboilerplate.utils.JsonUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;

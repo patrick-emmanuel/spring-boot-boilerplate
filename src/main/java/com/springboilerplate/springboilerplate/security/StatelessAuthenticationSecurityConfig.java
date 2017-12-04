@@ -46,7 +46,6 @@ public class StatelessAuthenticationSecurityConfig extends WebSecurityConfigurer
                 .addFilterBefore(new JwtLoginFilter("/login", authenticationManager(),
                                 tokenAuthenticationService, userService),
                         UsernamePasswordAuthenticationFilter.class)
-                // add custom authentication filter for complete stateless JWT based authentication
                 .addFilterBefore(statelessAuthenticationFilter, AbstractPreAuthenticatedProcessingFilter.class);
 
     }
