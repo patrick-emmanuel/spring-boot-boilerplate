@@ -39,12 +39,10 @@ public class UserController {
 
     @PostMapping(path="/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody UserDto user) throws Exception {
-        final User registeredUser = userService.saveUser(user, RoleType.USER);
-        s
-        HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.set(TokenAuthenticationService.AUTH_HEADER_NAME, token);
-        return new ResponseEntity<>("Registered and Logged in", responseHeaders, HttpStatus.CREATED);
+        userService.saveUser(user, RoleType.USER);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
+
 
     //TODO Enable pagination on hibernate search
     @GetMapping(path = "/search")
