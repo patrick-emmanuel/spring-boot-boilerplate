@@ -17,6 +17,7 @@ public class PasswordResetToken {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(name = "password_reset_token_id")
     public Long getId() {
         return id;
     }
