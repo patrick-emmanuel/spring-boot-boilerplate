@@ -29,11 +29,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
-@WebAppConfiguration
-@Transactional
-public class LoginTest {
+public class LoginTest extends BaseControllerTest{
     @Autowired
     private FilterChainProxy springSecurityFilter;
     @Autowired
@@ -42,24 +38,8 @@ public class LoginTest {
     private UserRepository userRepository;
     private User user;
 
-    private MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
-            MediaType.APPLICATION_JSON.getSubtype(),
-            Charset.forName("utf8"));
-
     private MockMvc mockMvc;
 
-    private HttpMessageConverter mappingJackson2HttpMessageConverter;
-
-    @Autowired
-    private void setConverters(HttpMessageConverter<?>[] converters) {
-        this.mappingJackson2HttpMessageConverter = Arrays.asList(converters).stream()
-                .filter(hmc -> hmc instanceof MappingJackson2HttpMessageConverter)
-                .findAny()
-                .orElse(null);
-
-        assertNotNull("the JSON message converter must not be null",
-                this.mappingJackson2HttpMessageConverter);
-    }
     @Before
     @Rollback
     public void setup() throws Exception {
@@ -79,5 +59,17 @@ public class LoginTest {
                 .andReturn().getResponse()
                 .getHeader("authorization");
         assertNotNull(authHeader);
+
+        //Access a protected resource to ensure that the jwt authentication is working.
+        mockMvc.perform(get("/v1/users/hello")
+                .header("authorization", authHeader))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @Rollback
+    public void accessingAProtectedResourceShouldReturn403UnAuthorized() throws Exception {
+        mockMvc.perform(get("/v1/users/hello"))
+                .andExpect(status().isForbidden());
     }
 }

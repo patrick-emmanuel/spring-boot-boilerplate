@@ -29,7 +29,7 @@ public class PasswordResetTokenController {
 
     //If successfully validated, then the user can update his password.
     @PostMapping(value = "/validateToken")
-    public ResponseEntity<Boolean> validateUserPassword(@RequestParam("id") long userId,
+    public ResponseEntity<Boolean> validateUserPassword(@RequestParam("userId") long userId,
                                                         @RequestParam("token") String token) {
         boolean valid = passwordResetTokenService.validateResetToken(userId, token);
         return new ResponseEntity<>(valid, HttpStatus.OK);

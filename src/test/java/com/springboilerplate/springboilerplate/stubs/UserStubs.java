@@ -27,7 +27,7 @@ public class UserStubs {
     }
     public static UserDto generateUserDto(){
         return new UserDto("Patrick", "Emmanuel",
-                "Password", "email@email.com");
+                "email@email.com", "Password");
     }
 
     public static User generateUserWithNoRole(){
