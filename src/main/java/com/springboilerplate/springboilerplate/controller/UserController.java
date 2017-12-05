@@ -38,23 +38,22 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-
-    //TODO Enable pagination on hibernate search
-    @GetMapping(path = "/search")
-    public ResponseEntity<?> searchUser(@RequestParam("keyword") String keyword) throws Exception{
-        List<User> users = userSearchService.findUsersByKeyword(keyword);
-        return new ResponseEntity<List<User>>(users, HttpStatus.OK);
-    }
-
-    @GetMapping(path = "/hello")
-    public String getHello(){
-        return "hello";
-    }
-
     @PostMapping(value = "/savePassword")
     public ResponseEntity<?> savePassword(@Valid PasswordDto passwordDto) {
         User user = SecurityUtils.getLoggedInUser();
         userService.changeUserPassword(user, passwordDto);
         return new ResponseEntity<Object>(HttpStatus.OK);
+    }
+
+    //TODO Enable pagination on hibernate search
+    @GetMapping(path = "/search")
+    public ResponseEntity<?> searchUser(@RequestParam("keyword") String keyword) throws Exception{
+        List<User> users = userSearchService.findUsersByKeyword(keyword);
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/hello")
+    public String getHello(){
+        return "hello";
     }
 }

@@ -1,6 +1,5 @@
 package com.springboilerplate.springboilerplate.controller;
 
-import com.springboilerplate.springboilerplate.model.PasswordResetToken;
 import com.springboilerplate.springboilerplate.model.User;
 import com.springboilerplate.springboilerplate.service.PasswordResetTokenService;
 import com.springboilerplate.springboilerplate.utils.SecurityUtils;
@@ -30,9 +29,9 @@ public class PasswordResetTokenController {
 
     //If successfully validated, then the user can update his password.
     @PostMapping(value = "/validateToken")
-    public ResponseEntity<Boolean> validateUserPassword(@RequestParam("id") long id,
+    public ResponseEntity<Boolean> validateUserPassword(@RequestParam("id") long userId,
                                                         @RequestParam("token") String token) {
-        boolean valid = passwordResetTokenService.validateResetToken(id, token);
+        boolean valid = passwordResetTokenService.validateResetToken(userId, token);
         return new ResponseEntity<>(valid, HttpStatus.OK);
     }
 

@@ -13,6 +13,11 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
 
 @EnableWebSecurity
 @Configuration
@@ -35,7 +40,7 @@ public class StatelessAuthenticationSecurityConfig extends WebSecurityConfigurer
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.exceptionHandling().and().anonymous()
+        http.cors().and().exceptionHandling().and().anonymous()
                 .and().servletApi().and().headers().cacheControl();
 
         http.authorizeRequests()
@@ -50,17 +55,29 @@ public class StatelessAuthenticationSecurityConfig extends WebSecurityConfigurer
 
     }
 
-        @Bean
-        @Override
-        public AuthenticationManager authenticationManagerBean() throws Exception {
-            return super.authenticationManagerBean();
-        }
-
-        @Override
-        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-            String passwordKey = env.getProperty("MOBSTAFF_PASSWORD_KEY");
-            auth.userDetailsService(userService)
-                    .passwordEncoder(new StandardPasswordEncoder(passwordKey));
-
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedMethods(Arrays.asList("PUT", "DELETE", "POST", "GET", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization"));
+        configuration.setExposedHeaders(Arrays.asList("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials", "authorization"));
+        configuration.setMaxAge(3600L);
+        configuration.setAllowCredentials(true);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
-}
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        String passwordKey = env.getProperty("MOBSTAFF_PASSWORD_KEY");
+        auth.userDetailsService(userService)
+                    .passwordEncoder(new StandardPasswordEncoder(passwordKey));
+    }
+ }
+

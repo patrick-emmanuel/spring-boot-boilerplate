@@ -53,4 +53,11 @@ public class CentralizedExceptionHandler extends ResponseEntityExceptionHandler 
         ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getMessage(), error);
         return new ResponseEntity<>(apiError, apiError.getStatus());
     }
+
+    @ExceptionHandler({InvalidPasswordResetToken.class})
+    public ResponseEntity<Object> handleInvalidTokenException(InvalidPasswordResetToken ex, WebRequest webRequest){
+        String error = ex.getMessage();
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getMessage(), error);
+        return new ResponseEntity<>(apiError, apiError.getStatus());
+    }
 }

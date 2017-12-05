@@ -65,6 +65,7 @@ public class CustomUserDetailsServiceTest {
 
         thrown.expect(UsernameNotFoundException.class);
         thrown.expectMessage("User with  '" + "username" + "' email not found.");
+
         User user = customUserDetailsService.loadUserByUsername("username");
     }
 }
