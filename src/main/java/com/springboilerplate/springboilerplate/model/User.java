@@ -1,5 +1,6 @@
 package com.springboilerplate.springboilerplate.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Where;
 import org.hibernate.search.annotations.*;
@@ -134,7 +135,7 @@ public class User implements UserDetails{
     }
 
     @Column(name = "created_at")
-    @JsonIgnore
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -144,7 +145,7 @@ public class User implements UserDetails{
     }
 
     @Column(name = "modified_at")
-    @JsonIgnore
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     public LocalDateTime getModifiedAt() {
         return modifiedAt;
     }
@@ -168,7 +169,7 @@ public class User implements UserDetails{
     }
 
     @Column(name = "last_login")
-    @JsonIgnore
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     public LocalDateTime getLastLogin() {
         return lastLogin;
     }

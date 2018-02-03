@@ -5,6 +5,7 @@ import com.springboilerplate.springboilerplate.repository.UserRepository;
 import com.springboilerplate.springboilerplate.dto.AccountCredentials;
 import com.springboilerplate.springboilerplate.stubs.UserStubs;
 import com.springboilerplate.springboilerplate.utils.JsonUtils;
+import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,10 +27,14 @@ import java.util.Arrays;
 
 import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
+@SpringBootTest
 public class LoginTest extends BaseControllerTest{
+
+    private Logger logger = Logger.getLogger(this.getClass().getName());
     @Autowired
     private FilterChainProxy springSecurityFilter;
     @Autowired
@@ -58,17 +63,19 @@ public class LoginTest extends BaseControllerTest{
                 .andExpect(status().isOk())
                 .andReturn().getResponse()
                 .getHeader("authorization");
+        logger.info("AUTH HEADER -----:\n" +authHeader.toUpperCase());
         assertNotNull(authHeader);
 
         //Access a protected resource to ensure that the jwt authentication is working.
         mockMvc.perform(get("/v1/users/hello")
                 .header("authorization", authHeader))
+                .andDo(print())
                 .andExpect(status().isOk());
     }
 
     @Test
     @Rollback
-    public void accessingAProtectedResourceShouldReturn403UnAuthorized() throws Exception {
+    public void accessingAProtectedResourceShouldReturn401UnAuthorized() throws Exception {
         mockMvc.perform(get("/v1/users/hello"))
                 .andExpect(status().isForbidden());
     }

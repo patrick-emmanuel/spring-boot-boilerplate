@@ -29,8 +29,7 @@ public class TokenAuthenticationService {
         this.userRepository = userRepository;
     }
 
-    public void addAuthentication(HttpServletResponse response,
-                                  UserAuthentication authentication) {
+    public void addAuthentication(HttpServletResponse response, UserAuthentication authentication) {
         final User user = authentication.getDetails();
         user.setExpires(System.currentTimeMillis() + TEN_DAYS);
         final String token = tokenHandler.createTokenForUser(user);
