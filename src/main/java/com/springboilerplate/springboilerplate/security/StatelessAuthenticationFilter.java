@@ -26,7 +26,7 @@ public class StatelessAuthenticationFilter extends GenericFilterBean {
         chain.doFilter(request, response);
     }
 
-    private void setAuthenticationFromHeader(HttpServletRequest request) {
+    private void setAuthenticationFromHeader(HttpServletRequest request){
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof UserAuthentication)) {
             final UserAuthentication userAuthentication = tokenAuthenticationService.

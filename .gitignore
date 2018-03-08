@@ -24,4 +24,4 @@ nbdist/
 .nb-gradle/
 
 #Hibernate search's indexes.
-com.springboilerplate.springboilerplate.model.User
+com.springboilerplate.springboilerplate.app.user.User

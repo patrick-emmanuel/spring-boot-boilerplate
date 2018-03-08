@@ -1,6 +1,7 @@
 package com.springboilerplate.springboilerplate.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.springboilerplate.springboilerplate.app.user.User;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -37,11 +38,11 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
     }
 
     @Override
-    protected void successfulAuthentication(
-            HttpServletRequest req, HttpServletResponse res, FilterChain chain,
-            Authentication auth) throws IOException, ServletException {
-        LoginSuccessHandler.handleSuccessLogin(req, res, auth,
-                userService, tokenAuthenticationService);
+    protected void successfulAuthentication(HttpServletRequest req, HttpServletResponse res, FilterChain chain,
+                                            Authentication auth) throws IOException, ServletException {
+        final User authenticatedUser = userService.loadUserByUsername(auth.getName());
+        final UserAuthentication userAuthentication = new UserAuthentication(authenticatedUser);
+        tokenAuthenticationService.addAuthentication(res, userAuthentication);
     }
 }
 

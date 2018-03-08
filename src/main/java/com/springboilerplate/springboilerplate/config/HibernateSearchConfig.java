@@ -1,9 +1,8 @@
 package com.springboilerplate.springboilerplate.config;
 
-import com.springboilerplate.springboilerplate.HibernateSearch.HibernateSearchService.HibernateSearchService;
+import com.springboilerplate.springboilerplate.app.search.HibernateSearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 import javax.persistence.EntityManager;

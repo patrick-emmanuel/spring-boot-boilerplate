@@ -5,11 +5,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
-import com.springboilerplate.springboilerplate.model.User;
+import com.springboilerplate.springboilerplate.exceptions.ExpiredTokenException;
+import com.springboilerplate.springboilerplate.exceptions.InvalidTokenException;
+import com.springboilerplate.springboilerplate.app.user.User;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
-import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
@@ -38,23 +38,35 @@ public class TokenHandler {
 
     public User parseUserFromToken(String token) {
         final String[] parts = token.split(SEPARATOR_SPLITTER);
-        if (parts.length == 2 && parts[0].length() > 0 && parts[1].length() > 0) {
+        if (validToken(parts)) {
             try {
                 final byte[] userBytes = fromBase64(parts[0]);
                 final byte[] hash = fromBase64(parts[1]);
-
                 boolean validHash = Arrays.equals(createHmac(userBytes), hash);
-                if (validHash) {
-                    final User user = fromJSON(userBytes);
-                    if (new Date().getTime() <  user.getExpires()) {
-                        return user;
-                    }
-                }
+                final User user = getUser(userBytes, validHash);
+                if (user != null) return user;
             } catch (IllegalArgumentException e) {
                 //log tempering attempt here
             }
         }
-        return null;
+        throw new InvalidTokenException("Token is invalid");
+    }
+
+    private User getUser(byte[] userBytes, boolean validHash) {
+        if (validHash) {
+            final User user = fromJSON(userBytes);
+            long currentTime = new Date().getTime();
+            if (currentTime <  user.getExpires()) {
+                return user;
+            }else {
+                throw new ExpiredTokenException("User token has expired.");
+            }
+        }
+        throw new InvalidTokenException("The token is not valid");
+    }
+
+    private boolean validToken(String parts[]){
+        return parts.length == 2 && parts[0].length() > 0 && parts[1].length() > 0;
     }
 
     public String createTokenForUser(User user) {
