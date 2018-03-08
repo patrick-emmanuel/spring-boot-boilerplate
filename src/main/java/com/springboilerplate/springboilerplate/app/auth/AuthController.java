@@ -24,7 +24,6 @@ public class AuthController {
 
     @Value("${jwt.header}")
     private String tokenHeader;
-
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
     @Autowired

@@ -34,7 +34,6 @@ public class User implements UserDetails{
     private String password;
     private String email;
     private List<UserRole> userRoles = new ArrayList<>();
-    private long expires;
     private Date lastPasswordResetDate;
     private LocalDateTime lastLogin = now;
     private LocalDateTime createdAt = now;
@@ -161,15 +160,6 @@ public class User implements UserDetails{
         this.modifiedAt = modifiedAt;
     }
 
-    @Transient
-    public long getExpires() {
-        return expires;
-    }
-
-    public void setExpires(long expires) {
-        this.expires = expires;
-    }
-
     @Column(name = "deleted")
     public boolean isDeleted() {
         return deleted;
@@ -226,7 +216,6 @@ public class User implements UserDetails{
     public boolean isCredentialsNonExpired() {
         return true;
     }
-
 
     @Column(name = "last_password_reset_data")
     @JsonIgnore
