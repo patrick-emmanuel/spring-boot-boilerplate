@@ -7,11 +7,9 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
 import com.springboilerplate.springboilerplate.exceptions.ExpiredTokenException;
 import com.springboilerplate.springboilerplate.exceptions.InvalidTokenException;
-import com.springboilerplate.springboilerplate.model.User;
+import com.springboilerplate.springboilerplate.app.user.User;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
-import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
@@ -51,7 +49,7 @@ public class TokenHandler {
                 //log tempering attempt here
             }
         }
-        return null;
+        throw new InvalidTokenException("Token is invalid");
     }
 
     private User getUser(byte[] userBytes, boolean validHash) {

@@ -1,6 +1,6 @@
 package com.springboilerplate.springboilerplate.security;
 
-import com.springboilerplate.springboilerplate.model.User;
+import com.springboilerplate.springboilerplate.app.user.User;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import java.util.Collection;

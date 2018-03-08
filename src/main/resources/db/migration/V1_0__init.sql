@@ -26,6 +26,7 @@ CREATE TABLE users(
     CONSTRAINT users_pkey PRIMARY KEY(user_id),
     UNIQUE(email)
 );
+
 CREATE TABLE password_reset_token(
     password_reset_token_id BIGSERIAL,
     token VARCHAR(255) NOT NULL,

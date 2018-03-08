@@ -1,8 +1,8 @@
 package com.springboilerplate.springboilerplate.security;
 
-import com.springboilerplate.springboilerplate.mocks.UserMocks;
-import com.springboilerplate.springboilerplate.model.User;
-import com.springboilerplate.springboilerplate.repository.UserRepository;
+import com.springboilerplate.springboilerplate.app.user.UserMocks;
+import com.springboilerplate.springboilerplate.app.user.User;
+import com.springboilerplate.springboilerplate.app.user.UserRepository;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

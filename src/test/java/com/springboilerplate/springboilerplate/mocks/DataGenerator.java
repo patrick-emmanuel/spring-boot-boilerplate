@@ -1,13 +1,12 @@
 package com.springboilerplate.springboilerplate.mocks;
 
-import com.springboilerplate.springboilerplate.enums.RoleType;
-import com.springboilerplate.springboilerplate.model.Role;
-import com.springboilerplate.springboilerplate.model.User;
-import com.springboilerplate.springboilerplate.repository.RoleRepository;
-import com.springboilerplate.springboilerplate.repository.UserRepository;
-import com.springboilerplate.springboilerplate.stubs.PasswordResetTokenStubs;
-import com.springboilerplate.springboilerplate.stubs.RoleStubs;
-import com.springboilerplate.springboilerplate.stubs.UserStubs;
+import com.springboilerplate.springboilerplate.app.role.RoleType;
+import com.springboilerplate.springboilerplate.app.role.Role;
+import com.springboilerplate.springboilerplate.app.user.User;
+import com.springboilerplate.springboilerplate.app.role.RoleRepository;
+import com.springboilerplate.springboilerplate.app.user.UserRepository;
+import com.springboilerplate.springboilerplate.app.role.RoleStubs;
+import com.springboilerplate.springboilerplate.app.user.UserStubs;
 
 import java.util.Optional;
 

@@ -1,7 +1,7 @@
 package com.springboilerplate.springboilerplate.helper;
 
-import com.springboilerplate.springboilerplate.model.PasswordResetToken;
-import com.springboilerplate.springboilerplate.model.User;
+import com.springboilerplate.springboilerplate.app.passwordRestToken.PasswordResetToken;
+import com.springboilerplate.springboilerplate.app.user.User;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

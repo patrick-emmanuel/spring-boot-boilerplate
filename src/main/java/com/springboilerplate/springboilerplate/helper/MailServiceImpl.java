@@ -1,6 +1,6 @@
 package com.springboilerplate.springboilerplate.helper;
 
-import com.springboilerplate.springboilerplate.dto.MailData;
+import com.springboilerplate.springboilerplate.app.user.MailData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;

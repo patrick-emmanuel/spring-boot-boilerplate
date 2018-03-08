@@ -1,8 +1,7 @@
 package com.springboilerplate.springboilerplate.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.springboilerplate.springboilerplate.dto.AccountCredentials;
-import com.springboilerplate.springboilerplate.model.User;
+import com.springboilerplate.springboilerplate.app.user.User;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
