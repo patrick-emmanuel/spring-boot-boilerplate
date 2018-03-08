@@ -7,20 +7,30 @@ import com.springboilerplate.springboilerplate.app.role.RoleRepository;
 import com.springboilerplate.springboilerplate.app.user.UserRepository;
 import com.springboilerplate.springboilerplate.app.role.RoleStubs;
 import com.springboilerplate.springboilerplate.app.user.UserStubs;
+import com.springboilerplate.springboilerplate.app.userRole.UserRole;
+import com.springboilerplate.springboilerplate.app.userRole.UserRoleRepository;
+import com.springboilerplate.springboilerplate.app.userRole.UserRoleStubs;
 
 import java.util.Optional;
 
 public class DataGenerator {
     private UserRepository userRepository;
     private RoleRepository roleRepository;
+    private UserRoleRepository userRoleRepository;
+
 
     public static class Builder {
         private UserRepository userRepository;
         private RoleRepository roleRepository;
+        private UserRoleRepository userRoleRepository;
 
         public Builder(UserRepository userRepository, RoleRepository roleRepository) {
             this.userRepository = userRepository;
             this.roleRepository = roleRepository;
+        }
+        public Builder userRoleRepo(UserRoleRepository userRoleRepository) {
+            this.userRoleRepository = userRoleRepository;
+            return this;
         }
         public DataGenerator build() {
             return new DataGenerator(this);
@@ -30,6 +40,7 @@ public class DataGenerator {
     private DataGenerator(Builder builder) {
         userRepository = builder.userRepository;
         roleRepository = builder.roleRepository;
+        userRoleRepository = builder.userRoleRepository;
     }
 
     public User createUser(int i) {
@@ -39,12 +50,19 @@ public class DataGenerator {
 
     public User createUser() {
         User user = UserStubs.generateUser();
-        user.setRole(createRole(RoleType.USER));
+        user.addUserRole(UserRoleStubs.generateUserRole());
         return userRepository.save(user);
     }
 
+    public UserRole createUserRole(){
+        UserRole userRole = UserRoleStubs.generateUserRole();
+        return userRoleRepository.save(userRole);
+    }
+
+
+
     public Role createRole(RoleType roleType) {
-        Optional<Role> optionalRole = roleRepository.findByName(roleType.name());
+        Optional<Role> optionalRole = roleRepository.findByName(roleType);
         if(optionalRole.isPresent()){
             return optionalRole.get();
         }

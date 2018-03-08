@@ -1,4 +1,4 @@
-package com.springboilerplate.springboilerplate.app.user;
+package com.springboilerplate.springboilerplate.helper;
 
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.mail.javamail.JavaMailSender;

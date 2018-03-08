@@ -1,6 +1,5 @@
 package com.springboilerplate.springboilerplate.helper;
 
-import com.springboilerplate.springboilerplate.app.user.MailData;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

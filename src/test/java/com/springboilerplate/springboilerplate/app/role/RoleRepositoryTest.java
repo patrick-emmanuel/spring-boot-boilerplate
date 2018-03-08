@@ -33,17 +33,17 @@ public class RoleRepositoryTest {
     public void findByNameShouldReturnRole() throws Exception {
         entityManager.persistAndFlush(roleToPersist);
 
-        Optional<Role> optionalRole = roleRepository.findByName("NEW_ROLE");
+        Optional<Role> optionalRole = roleRepository.findByName(RoleType.ROLE_USER);
 
         assertThat(optionalRole.isPresent()).isTrue();
-        assertThat(optionalRole.map(Role::getName).orElse("No role.")).isEqualTo(roleToPersist.getName());
+        assertThat(optionalRole.get().getName()).isEqualTo(roleToPersist.getName());
     }
 
     @Test
     public void findByNameWhenRoleIsInvalidShouldReturnNoRole() throws Exception {
         entityManager.persistAndFlush(roleToPersist);
 
-        Optional<Role> optionalRole = roleRepository.findByName("NON_EXISTENT_ROLE");
+        Optional<Role> optionalRole = roleRepository.findByName(RoleType.ROLE_ADMIN);
 
         assertThat(optionalRole.isPresent()).isFalse();
     }

@@ -2,7 +2,7 @@ package com.springboilerplate.springboilerplate.app.user;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.springboilerplate.springboilerplate.app.role.Role;
+import com.springboilerplate.springboilerplate.app.userRole.UserRole;
 import org.hibernate.annotations.Where;
 import org.hibernate.search.annotations.*;
 import org.hibernate.search.annotations.Index;
@@ -17,10 +17,12 @@ import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
-@Table(name="users")
+@Table(name="user")
 @Indexed
 @Where(clause = "deleted = false")
 public class User implements UserDetails{
@@ -31,27 +33,28 @@ public class User implements UserDetails{
     private String lastname;
     private String password;
     private String email;
-    private Role role;
+    private List<UserRole> userRoles = new ArrayList<>();
     private long expires;
+    private Date lastPasswordResetDate;
     private LocalDateTime lastLogin = now;
     private LocalDateTime createdAt = now;
     private LocalDateTime modifiedAt = now;
     private boolean enabled = true;
     private boolean deleted = false;
 
-    public User(String firstname, String lastname, String password, String email, Role role) {
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.password = password;
-        this.email = email;
-        this.role = role;
-    }
-
     public User(String firstname, String lastname, String password, String email) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.password = password;
         this.email = email;
+    }
+
+    public User(String firstname, String lastname, String password, String email, List<UserRole> userRoles) {
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.password = password;
+        this.email = email;
+        this.userRoles = userRoles;
     }
 
     public User() {
@@ -115,13 +118,18 @@ public class User implements UserDetails{
         this.email = email;
     }
 
-    @ManyToOne
-    @JoinColumn(name="role_id", foreignKey = @ForeignKey(name = "FK_users_roles"))
-    public Role getRole() {
-        return role;
+    @OneToMany(mappedBy="user", orphanRemoval = true)
+    public List<UserRole> getUserRoles() {
+        return userRoles;
     }
-    public void setRole(Role role) {
-        this.role = role;
+
+    public void setUserRoles(List<UserRole> userRoles) {
+        this.userRoles = userRoles;
+    }
+
+    public void addUserRole(UserRole userRole){
+        userRoles.add(userRole);
+        userRole.setUser(this);
     }
 
     @Column(name = "enabled")
@@ -186,13 +194,9 @@ public class User implements UserDetails{
     @JsonIgnore
     @Transient
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        Role role = getRole();
-        if (role != null) {
-            String roleName = "ROLE_" + role.getName();
-            authorities.add(new SimpleGrantedAuthority(roleName));
-        }
-        return authorities;
+        return userRoles.stream()
+                .map(userRole -> (new SimpleGrantedAuthority(userRole.getRole().getName().name())))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -221,5 +225,16 @@ public class User implements UserDetails{
     @Transient
     public boolean isCredentialsNonExpired() {
         return true;
+    }
+
+
+    @Column(name = "last_password_reset_data")
+    @JsonIgnore
+    public Date getLastPasswordResetDate() {
+        return lastPasswordResetDate;
+    }
+
+    public void setLastPasswordResetDate(Date lastPasswordResetDate) {
+        this.lastPasswordResetDate = lastPasswordResetDate;
     }
 }
