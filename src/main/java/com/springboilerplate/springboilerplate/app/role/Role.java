@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.springboilerplate.springboilerplate.app.userRole.UserRole;
 import org.hibernate.search.annotations.DocumentId;
@@ -17,6 +18,7 @@ import org.hibernate.search.annotations.DocumentId;
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "id", scope = Role.class)
+@JsonRootName(value = "payload")
 public class Role {
     @Transient
     private LocalDateTime now = LocalDateTime.now();

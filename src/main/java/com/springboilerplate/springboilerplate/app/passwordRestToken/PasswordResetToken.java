@@ -1,5 +1,6 @@
 package com.springboilerplate.springboilerplate.app.passwordRestToken;
 
+import com.fasterxml.jackson.annotation.JsonRootName;
 import com.springboilerplate.springboilerplate.app.user.User;
 
 import javax.persistence.*;
@@ -8,6 +9,7 @@ import java.time.Instant;
 
 @Entity
 @Table(name = "password_reset_token")
+@JsonRootName(value = "payload")
 public class PasswordResetToken {
 
     private Long id;

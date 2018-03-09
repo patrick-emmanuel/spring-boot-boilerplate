@@ -1,6 +1,7 @@
 package com.springboilerplate.springboilerplate.app.userRole;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.springboilerplate.springboilerplate.app.role.Role;
 import com.springboilerplate.springboilerplate.app.user.User;
@@ -11,6 +12,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "user_role", uniqueConstraints=@UniqueConstraint(columnNames={"user_id", "role_id"}))
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = UserRole.class)
+@JsonRootName(value = "payload")
 public class UserRole {
 
     @Id

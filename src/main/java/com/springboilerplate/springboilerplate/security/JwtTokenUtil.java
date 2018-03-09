@@ -27,8 +27,8 @@ public class JwtTokenUtil implements Serializable{
 
     @Value("${jwt.expiration}")
     private Long expiration;
-    private Clock clock = DefaultClock.INSTANCE;
 
+    private Clock clock = DefaultClock.INSTANCE;
 
     public String getEmailFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
@@ -121,5 +121,4 @@ public class JwtTokenUtil implements Serializable{
     private Date calculateExpirationDate(Date createdDate) {
         return new Date(createdDate.getTime() + expiration * 1000);
     }
-
 }

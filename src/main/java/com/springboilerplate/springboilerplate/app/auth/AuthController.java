@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +19,7 @@ import javax.validation.constraints.NotNull;
 @RestController
 public class AuthController {
 
-    Logger logger = LoggerFactory.getLogger(AuthController.class);
+    private Logger logger = LoggerFactory.getLogger(AuthController.class);
     @Value("${jwt.header}")
     private String tokenHeader;
     @Autowired
@@ -30,14 +29,13 @@ public class AuthController {
     @Autowired
     private CustomUserService customUserService;
 
-
     @GetMapping(value = "user")
     public User getAuthenticatedUser(HttpServletRequest request) {
         String token = request.getHeader(tokenHeader).substring(7);
         logger.info("Retrieved token: '{}'", token);
-        String username = jwtTokenUtil.getEmailFromToken(token);
-        logger.info("Retrieved user from token: '{}'", username);
-        return customUserService.loadUserByUsername(username);
+        String email = jwtTokenUtil.getEmailFromToken(token);
+        logger.info("Retrieved user from token: '{}'", email);
+        return customUserService.loadUserByUsername(email);
     }
 
     @PostMapping(value = "${jwt.route.authentication.path}")

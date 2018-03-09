@@ -2,6 +2,7 @@ package com.springboilerplate.springboilerplate.app.user;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonRootName;
 import com.springboilerplate.springboilerplate.app.role.Role;
 import com.springboilerplate.springboilerplate.app.userRole.UserRole;
 import org.hibernate.Hibernate;
@@ -27,6 +28,7 @@ import java.util.stream.Collectors;
 @Table(name="users")
 @Indexed
 @Where(clause = "deleted = false")
+@JsonRootName(value = "payload")
 public class User implements UserDetails{
     @Transient
     private LocalDateTime now = LocalDateTime.now();
