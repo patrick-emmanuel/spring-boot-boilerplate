@@ -3,7 +3,6 @@ package com.springboilerplate.springboilerplate.security;
 import com.springboilerplate.springboilerplate.app.user.User;
 import com.springboilerplate.springboilerplate.app.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,12 +12,12 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class CustomUserDetailsService implements CustomUserService{
+public class JwtUserDetailsService implements CustomUserService{
 
     private UserRepository userRepository;
 
     @Autowired
-    public CustomUserDetailsService(UserRepository userRepository) {
+    public JwtUserDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

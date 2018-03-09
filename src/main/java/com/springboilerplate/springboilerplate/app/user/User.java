@@ -2,7 +2,9 @@ package com.springboilerplate.springboilerplate.app.user;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.springboilerplate.springboilerplate.app.role.Role;
 import com.springboilerplate.springboilerplate.app.userRole.UserRole;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.Where;
 import org.hibernate.search.annotations.*;
 import org.hibernate.search.annotations.Index;
@@ -22,7 +24,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Entity
-@Table(name="user")
+@Table(name="users")
 @Indexed
 @Where(clause = "deleted = false")
 public class User implements UserDetails{
@@ -117,7 +119,8 @@ public class User implements UserDetails{
         this.email = email;
     }
 
-    @OneToMany(mappedBy="user", orphanRemoval = true)
+
+    @OneToMany(mappedBy="user", orphanRemoval = true, fetch = FetchType.EAGER)
     public List<UserRole> getUserRoles() {
         return userRoles;
     }
@@ -165,6 +168,10 @@ public class User implements UserDetails{
         return deleted;
     }
 
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+
     @Column(name = "last_login")
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     public LocalDateTime getLastLogin() {
@@ -175,18 +182,24 @@ public class User implements UserDetails{
         this.lastLogin = lastLogin;
     }
 
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
+    @Column(name = "last_password_reset_data")
+    @JsonIgnore
+    public Date getLastPasswordResetDate() {
+        return lastPasswordResetDate;
+    }
 
+    public void setLastPasswordResetDate(Date lastPasswordResetDate) {
+        this.lastPasswordResetDate = lastPasswordResetDate;
     }
 
     @Override
     @JsonIgnore
     @Transient
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return userRoles.stream()
-                .map(userRole -> (new SimpleGrantedAuthority(userRole.getRole().getName().name())))
-                .collect(Collectors.toList());
+        //Hibernate initialize because role on userRole is lazily loaded.
+        userRoles.forEach(userRole -> Hibernate.initialize(userRole.getRole()));
+        return userRoles.stream().map(userRole -> new SimpleGrantedAuthority(
+                        userRole.getRole().getName().name())).collect(Collectors.toList());
     }
 
     @Override
@@ -215,15 +228,5 @@ public class User implements UserDetails{
     @Transient
     public boolean isCredentialsNonExpired() {
         return true;
-    }
-
-    @Column(name = "last_password_reset_data")
-    @JsonIgnore
-    public Date getLastPasswordResetDate() {
-        return lastPasswordResetDate;
-    }
-
-    public void setLastPasswordResetDate(Date lastPasswordResetDate) {
-        this.lastPasswordResetDate = lastPasswordResetDate;
     }
 }

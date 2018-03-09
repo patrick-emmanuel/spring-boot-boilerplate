@@ -27,9 +27,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private JwtAuthenticationEntryPoint unauthorizedHandler;
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
-
     @Autowired
-    private CustomUserDetailsService customUserDetailsService;
+    private JwtUserDetailsService customUserService;
 
     @Value("${jwt.header}")
     private String tokenHeader;
@@ -39,13 +38,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(customUserDetailsService)
+        auth.userDetailsService(customUserService)
                 .passwordEncoder(passwordEncoder());
     }
 
     @Bean
-    @Autowired
-    public AuthenticationManager authenticationManager() throws Exception {
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
 
@@ -66,7 +65,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // Un-secure H2 Database
                 .antMatchers("/h2-console/**/**").permitAll()
                 .antMatchers("/auth/**").permitAll()
+                .antMatchers("/v1/users/**").permitAll()
                 .antMatchers("/actuator/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/v1/users/register").permitAll()
                 .anyRequest().authenticated();
 
         // Custom JWT based security filter

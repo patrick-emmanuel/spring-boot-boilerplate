@@ -3,18 +3,16 @@ package com.springboilerplate.springboilerplate.app.auth;
 import com.springboilerplate.springboilerplate.app.user.User;
 import com.springboilerplate.springboilerplate.security.CustomUserService;
 import com.springboilerplate.springboilerplate.security.JwtTokenUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
@@ -22,6 +20,7 @@ import javax.validation.constraints.NotNull;
 @RestController
 public class AuthController {
 
+    Logger logger = LoggerFactory.getLogger(AuthController.class);
     @Value("${jwt.header}")
     private String tokenHeader;
     @Autowired
@@ -32,22 +31,26 @@ public class AuthController {
     private CustomUserService customUserService;
 
 
-    @RequestMapping(value = "user", method = RequestMethod.GET)
+    @GetMapping(value = "user")
     public User getAuthenticatedUser(HttpServletRequest request) {
         String token = request.getHeader(tokenHeader).substring(7);
+        logger.info("Retrieved token: '{}'", token);
         String username = jwtTokenUtil.getEmailFromToken(token);
+        logger.info("Retrieved user from token: '{}'", username);
         return customUserService.loadUserByUsername(username);
     }
 
-    @RequestMapping(value = "${jwt.route.authentication.path}", method = RequestMethod.POST)
+    @PostMapping(value = "${jwt.route.authentication.path}")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AccountCredentials accountCredentials) {
-        authenticate(accountCredentials);
-        final UserDetails userDetails = customUserService.loadUserByUsername(accountCredentials.getEmail());
+        authenticateUser(accountCredentials);
+        final User userDetails = customUserService.loadUserByUsername(accountCredentials.getEmail());
+        logger.info("Loaded user details: '{}' '{}'", userDetails);
         final String token = jwtTokenUtil.generateToken(userDetails);
+        logger.info("Generated token: '{}'", token);
         return ResponseEntity.ok(new JwtAuthenticationResponse(token));
     }
 
-    @RequestMapping(value = "${jwt.route.authentication.refresh}", method = RequestMethod.GET)
+    @GetMapping(value = "${jwt.route.authentication.refresh}")
     public ResponseEntity<?> refreshAndGetAuthenticationToken(HttpServletRequest request) {
         String authToken = request.getHeader(tokenHeader);
         final String token = authToken.substring(7);
@@ -61,8 +64,10 @@ public class AuthController {
         }
     }
 
-    private void authenticate(@NotNull  AccountCredentials accountCredentials) {
+    private void authenticateUser(@NotNull  AccountCredentials accountCredentials) throws AuthenticationException{
         String email = accountCredentials.getEmail(), password = accountCredentials.getPassword();
+        logger.info("Authenticating with the following email and password: '{}' '{}'", email, password);
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
+        logger.info("Authenticated with email: '{}' '{}'", email, password);
     }
 }

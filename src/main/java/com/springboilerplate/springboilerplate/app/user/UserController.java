@@ -47,6 +47,6 @@ public class UserController {
 
     @GetMapping(path = "/hello")
     public String getHello(){
-        return "hello";
+        return "hey!";
     }
 }

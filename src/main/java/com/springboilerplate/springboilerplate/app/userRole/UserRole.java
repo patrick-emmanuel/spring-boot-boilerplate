@@ -20,12 +20,12 @@ public class UserRole {
 
     @NotNull
     @JoinColumn(name="user_id")
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
     private User user;
 
     @NotNull
     @JoinColumn(name="role_id")
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
     private Role role;
 
     public UserRole() {

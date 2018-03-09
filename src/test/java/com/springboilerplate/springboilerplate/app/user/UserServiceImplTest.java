@@ -9,21 +9,24 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 public class UserServiceImplTest {
 
     //dependencies
     @MockBean
-    private UserRoleRepository userRoleRepository;
-    @MockBean
     private RoleRepository roleRepository;
     @MockBean
     private UserRepository userRepository;
     @MockBean
     private UserDtoMapper userDtoMapper;
+    @MockBean
+    private PasswordEncoder passwordEncoder;
 
     //system under test.
     private UserService userService;
@@ -38,7 +41,8 @@ public class UserServiceImplTest {
         mapperMocks.initMocks(userDtoMapper);
         roleMocks.initMocks(roleRepository);
         userMocks.initMocks(userRepository);
-        userService = new UserServiceImpl(roleRepository, userRepository, userRoleRepository, userDtoMapper);
+        when(passwordEncoder.encode(anyString())).thenReturn("encryptedPassword");
+        userService = new UserServiceImpl(roleRepository, userRepository, userDtoMapper, passwordEncoder);
     }
 
     @Test

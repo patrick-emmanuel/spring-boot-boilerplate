@@ -4,7 +4,7 @@ import com.springboilerplate.springboilerplate.app.role.Role;
 import com.springboilerplate.springboilerplate.app.role.RoleType;
 import com.springboilerplate.springboilerplate.app.user.User;
 import com.springboilerplate.springboilerplate.app.userRole.UserRole;
-import com.springboilerplate.springboilerplate.security.CustomUserDetailsService;
+import com.springboilerplate.springboilerplate.security.JwtUserDetailsService;
 import com.springboilerplate.springboilerplate.security.JwtTokenUtil;
 import com.springboilerplate.springboilerplate.utils.JsonUtils;
 import org.junit.Before;
@@ -46,7 +46,7 @@ public class AuthControllerTest {
     @MockBean
     private JwtTokenUtil jwtTokenUtil;
     @MockBean
-    private CustomUserDetailsService customUserDetailsService;
+    private JwtUserDetailsService jwtUserDetailsService;
 
     @Before
     public void setup() {
@@ -71,7 +71,7 @@ public class AuthControllerTest {
     public void successfulRefreshTokenWithUserRole() throws Exception {
         User user = getUser();
         when(jwtTokenUtil.getEmailFromToken(any())).thenReturn(user.getUsername());
-        when(customUserDetailsService.loadUserByUsername(eq(user.getUsername()))).thenReturn(user);
+        when(jwtUserDetailsService.loadUserByUsername(eq(user.getUsername()))).thenReturn(user);
         when(jwtTokenUtil.canTokenBeRefreshed(any(), any())).thenReturn(true);
         mvc.perform(get("/refresh")
                 .header("Authorization", "Bearer 5d1103e-b3e1-4ae9-b606-46c9c1bc915a"))
@@ -85,7 +85,7 @@ public class AuthControllerTest {
         User user = getUser();
         when(jwtTokenUtil.getEmailFromToken(any())).thenReturn(user.getUsername());
 
-        when(customUserDetailsService.loadUserByUsername(eq(user.getUsername()))).thenReturn(user);
+        when(jwtUserDetailsService.loadUserByUsername(eq(user.getUsername()))).thenReturn(user);
 
         when(jwtTokenUtil.canTokenBeRefreshed(any(), any())).thenReturn(true);
 

@@ -33,17 +33,17 @@ public class CustomUserDetailsServiceTest {
     public ExpectedException thrown = ExpectedException.none();
 
     @InjectMocks
-    private CustomUserDetailsService customUserDetailsService;
+    private JwtUserDetailsService jwtUserDetailsService;
 
     @Before
     public void setUp() throws Exception {
-        customUserDetailsService = new CustomUserDetailsService(userRepository);
+        jwtUserDetailsService = new JwtUserDetailsService(userRepository);
         userMocks.initMocks(userRepository);
     }
 
     @Test
     public void loadUserByUsername() throws Exception {
-        User user = customUserDetailsService.loadUserByUsername("username");
+        User user = jwtUserDetailsService.loadUserByUsername("username");
 
         assertThat(user).isNotNull();
         verify(userRepository).getByEmailAndDeletedFalse(anyString());
@@ -52,7 +52,7 @@ public class CustomUserDetailsServiceTest {
 
     @Test
     public void loadUserByUsernameShouldReturnTheUserFirstnameWhenUserIsPresent() throws Exception {
-        User user = customUserDetailsService.loadUserByUsername("notvalid");
+        User user = jwtUserDetailsService.loadUserByUsername("notvalid");
 
         assertThat(user.getFirstname()).isEqualTo("Patrick");
         verify(userRepository).getByEmailAndDeletedFalse(anyString());
@@ -66,6 +66,6 @@ public class CustomUserDetailsServiceTest {
         thrown.expect(UsernameNotFoundException.class);
         thrown.expectMessage("User with  '" + "username" + "' email not found.");
 
-        User user = customUserDetailsService.loadUserByUsername("username");
+        User user = jwtUserDetailsService.loadUserByUsername("username");
     }
 }
