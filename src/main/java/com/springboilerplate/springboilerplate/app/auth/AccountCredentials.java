@@ -1,6 +1,8 @@
-package com.springboilerplate.springboilerplate.security;
+package com.springboilerplate.springboilerplate.app.auth;
 
-public class AccountCredentials {
+import java.io.Serializable;
+
+public class AccountCredentials implements Serializable{
     private String email;
     private String password;
 

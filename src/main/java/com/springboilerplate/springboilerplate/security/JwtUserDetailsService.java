@@ -12,12 +12,12 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class CustomUserDetailsService implements CustomUserService{
+public class JwtUserDetailsService implements CustomUserService{
 
     private UserRepository userRepository;
 
     @Autowired
-    public CustomUserDetailsService(UserRepository userRepository) {
+    public JwtUserDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

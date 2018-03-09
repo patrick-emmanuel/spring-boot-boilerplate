@@ -1,6 +1,6 @@
 package com.springboilerplate.springboilerplate.app.user;
 
-import com.springboilerplate.springboilerplate.app.role.RoleStubs;
+import com.springboilerplate.springboilerplate.app.userRole.UserRoleStubs;
 
 import java.util.Optional;
 
@@ -8,12 +8,12 @@ public class UserStubs {
 
     public static User generateUser(){
         return new User("Patrick", "Emmanuel",
-                "Password", "email@email.com", RoleStubs.generateRole());
+                "Password", "email@email.com", UserRoleStubs.generateUserRoles());
     }
 
     public static User generateUser(int i){
         return new User("Patrick" + i, "Emmanuel" + i,
-                "Password", "email@email.com" + i, RoleStubs.generateRole());
+                "Password", "email@email.com" + i, UserRoleStubs.generateUserRoles());
     }
     public static User generateUserWithEncyptedPassword(){
         return new User("Patrick", "Emmanuel",
@@ -22,7 +22,7 @@ public class UserStubs {
 
     public static Optional<User> generateOptionalUser(){
         return Optional.of(new User("Patrick", "Emmanuel",
-                "Password", "email@email.com", RoleStubs.generateRole()));
+                "Password", "email@email.com", UserRoleStubs.generateUserRoles()));
     }
     public static UserDto generateUserDto(){
         return new UserDto("Patrick", "Emmanuel",

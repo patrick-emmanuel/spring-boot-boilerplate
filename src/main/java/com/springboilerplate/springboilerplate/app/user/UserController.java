@@ -27,7 +27,7 @@ public class UserController {
 
     @PostMapping(path="/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody UserDto user) throws Exception {
-        userService.saveUser(user, RoleType.USER);
+        userService.saveUser(user, RoleType.ROLE_USER);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -47,6 +47,6 @@ public class UserController {
 
     @GetMapping(path = "/hello")
     public String getHello(){
-        return "hello";
+        return "hey!";
     }
 }

@@ -1,6 +1,5 @@
 package com.springboilerplate.springboilerplate.app.user;
 
-import com.springboilerplate.springboilerplate.app.user.User;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 

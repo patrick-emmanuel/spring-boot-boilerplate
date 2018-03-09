@@ -74,4 +74,11 @@ public class CentralizedExceptionHandler extends ResponseEntityExceptionHandler 
         ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), error);
         return new ResponseEntity<>(apiError, apiError.getStatus());
     }
+
+    @ExceptionHandler({RoleDoesNotExistException.class})
+    public ResponseEntity<Object> handleRoleDoesNotExistException(RoleDoesNotExistException ex, WebRequest webRequest){
+        String error = ex.getMessage();
+        ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, ex.getMessage(), error);
+        return new ResponseEntity<>(apiError, apiError.getStatus());
+    }
 }

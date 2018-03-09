@@ -2,7 +2,10 @@ package com.springboilerplate.springboilerplate.app.user;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonRootName;
 import com.springboilerplate.springboilerplate.app.role.Role;
+import com.springboilerplate.springboilerplate.app.userRole.UserRole;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.Where;
 import org.hibernate.search.annotations.*;
 import org.hibernate.search.annotations.Index;
@@ -17,12 +20,15 @@ import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name="users")
 @Indexed
 @Where(clause = "deleted = false")
+@JsonRootName(value = "payload")
 public class User implements UserDetails{
     @Transient
     private LocalDateTime now = LocalDateTime.now();
@@ -31,27 +37,27 @@ public class User implements UserDetails{
     private String lastname;
     private String password;
     private String email;
-    private Role role;
-    private long expires;
+    private List<UserRole> userRoles = new ArrayList<>();
+    private Date lastPasswordResetDate;
     private LocalDateTime lastLogin = now;
     private LocalDateTime createdAt = now;
     private LocalDateTime modifiedAt = now;
     private boolean enabled = true;
     private boolean deleted = false;
 
-    public User(String firstname, String lastname, String password, String email, Role role) {
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.password = password;
-        this.email = email;
-        this.role = role;
-    }
-
     public User(String firstname, String lastname, String password, String email) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.password = password;
         this.email = email;
+    }
+
+    public User(String firstname, String lastname, String password, String email, List<UserRole> userRoles) {
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.password = password;
+        this.email = email;
+        this.userRoles = userRoles;
     }
 
     public User() {
@@ -115,13 +121,19 @@ public class User implements UserDetails{
         this.email = email;
     }
 
-    @ManyToOne
-    @JoinColumn(name="role_id", foreignKey = @ForeignKey(name = "FK_users_roles"))
-    public Role getRole() {
-        return role;
+
+    @OneToMany(mappedBy="user", orphanRemoval = true, fetch = FetchType.EAGER)
+    public List<UserRole> getUserRoles() {
+        return userRoles;
     }
-    public void setRole(Role role) {
-        this.role = role;
+
+    public void setUserRoles(List<UserRole> userRoles) {
+        this.userRoles = userRoles;
+    }
+
+    public void addUserRole(UserRole userRole){
+        userRoles.add(userRole);
+        userRole.setUser(this);
     }
 
     @Column(name = "enabled")
@@ -153,18 +165,13 @@ public class User implements UserDetails{
         this.modifiedAt = modifiedAt;
     }
 
-    @Transient
-    public long getExpires() {
-        return expires;
-    }
-
-    public void setExpires(long expires) {
-        this.expires = expires;
-    }
-
     @Column(name = "deleted")
     public boolean isDeleted() {
         return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 
     @Column(name = "last_login")
@@ -177,22 +184,24 @@ public class User implements UserDetails{
         this.lastLogin = lastLogin;
     }
 
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
+    @Column(name = "last_password_reset_data")
+    @JsonIgnore
+    public Date getLastPasswordResetDate() {
+        return lastPasswordResetDate;
+    }
 
+    public void setLastPasswordResetDate(Date lastPasswordResetDate) {
+        this.lastPasswordResetDate = lastPasswordResetDate;
     }
 
     @Override
     @JsonIgnore
     @Transient
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        Role role = getRole();
-        if (role != null) {
-            String roleName = "ROLE_" + role.getName();
-            authorities.add(new SimpleGrantedAuthority(roleName));
-        }
-        return authorities;
+        //Hibernate initialize because role on userRole is lazily loaded.
+        userRoles.forEach(userRole -> Hibernate.initialize(userRole.getRole()));
+        return userRoles.stream().map(userRole -> new SimpleGrantedAuthority(
+                        userRole.getRole().getName().name())).collect(Collectors.toList());
     }
 
     @Override

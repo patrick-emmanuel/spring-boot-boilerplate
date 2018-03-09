@@ -3,29 +3,35 @@ package com.springboilerplate.springboilerplate.app.role;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.springboilerplate.springboilerplate.app.userRole.UserRole;
 import org.hibernate.search.annotations.DocumentId;
 
 @Entity
-@Table(name="roles")
+@Table(name="role")
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "id", scope = Role.class)
+@JsonRootName(value = "payload")
 public class Role {
     @Transient
     private LocalDateTime now = LocalDateTime.now();
 
     private Long id;
-    private String name;
+    private RoleType name;
+    private List<UserRole> userRoles = new ArrayList<>();
     private boolean enabled = true;
     private boolean deleted = false;
     private LocalDateTime createdAt = now;
     private LocalDateTime modifiedAt = now;
 
-    public Role(String name) {
+    public Role(RoleType name) {
         this.name = name;
     }
 
@@ -45,13 +51,28 @@ public class Role {
     }
 
     @NotNull
-    @Column(name="name", unique = true)
-    public String getName() {
+    @Column(name="name", unique = true, length = 50)
+    @Enumerated(EnumType.STRING)
+    public RoleType getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(RoleType name) {
         this.name = name;
+    }
+
+    @OneToMany(mappedBy = "role", orphanRemoval = true)
+    public List<UserRole> getUserRoles() {
+        return userRoles;
+    }
+
+    public void setUserRoles(List<UserRole> userRoles) {
+        this.userRoles = userRoles;
+    }
+
+    public void addUserRole(UserRole userRole){
+        userRoles.add(userRole);
+        userRole.setRole(this);
     }
 
     @Column
