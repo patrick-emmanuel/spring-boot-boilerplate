@@ -65,9 +65,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // Un-secure H2 Database
                 .antMatchers("/h2-console/**/**").permitAll()
                 .antMatchers("/auth/**").permitAll()
-                .antMatchers("/v1/users/**").permitAll()
-                .antMatchers("/actuator/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/v1/users/register").permitAll()
+                .antMatchers("/users/**").authenticated()
+                .antMatchers("/actuator/**").permitAll()//Add authentication in prod environment
+                .antMatchers("/v2/api-docs").permitAll()//Add authentication in prod environment
+                .antMatchers("/swagger-resources/**").permitAll()//Add authentication in prod environment
+                .antMatchers(HttpMethod.POST, "/v1/users/register").permitAll()//Add authentication in prod environment
+
+
                 .anyRequest().authenticated();
 
         // Custom JWT based security filter
@@ -107,8 +111,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // Un-secure H2 Database (for testing purposes, H2 console shouldn't be unprotected in production)
                 .and()
                 .ignoring()
-                .antMatchers("/h2-console/**/**")
-                .antMatchers("/actuator/**");
+                .antMatchers("/h2-console/**/**")//Add authentication for production environment.
+                .antMatchers("/actuator/**")
+                .antMatchers("/v2/api-docs/**")
+                .antMatchers("/swagger-resources/**")
+                .antMatchers("/swagger-ui.html/**");
     }
  }
 

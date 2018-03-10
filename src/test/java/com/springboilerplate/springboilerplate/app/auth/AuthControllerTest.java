@@ -81,12 +81,9 @@ public class AuthControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     public void successfulRefreshTokenWithAdminRole() throws Exception {
-
         User user = getUser();
         when(jwtTokenUtil.getEmailFromToken(any())).thenReturn(user.getUsername());
-
         when(jwtUserDetailsService.loadUserByUsername(eq(user.getUsername()))).thenReturn(user);
-
         when(jwtTokenUtil.canTokenBeRefreshed(any(), any())).thenReturn(true);
 
         mvc.perform(get("/refresh")

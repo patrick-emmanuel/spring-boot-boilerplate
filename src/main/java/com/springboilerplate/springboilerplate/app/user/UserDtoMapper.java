@@ -1,8 +1,6 @@
 
 package com.springboilerplate.springboilerplate.app.user;
 
-import com.springboilerplate.springboilerplate.app.user.UserDto;
-import com.springboilerplate.springboilerplate.app.user.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
@@ -15,12 +13,10 @@ public class UserDtoMapper {
     }
 
     public UserDto toUserDto(User user) {
-        UserDto userDto = modelMapper.map(user, UserDto.class);
-        return userDto;
+        return modelMapper.map(user, UserDto.class);
     }
 
     public User toUser(UserDto userDto) {
-        User user = modelMapper.map(userDto, User.class);
-        return user;
+        return modelMapper.map(userDto, User.class);
     }
 }

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController("/v1/passwordResetToken")
+@RestController("/passwordResetToken")
 public class PasswordResetTokenController {
 
     private PasswordResetTokenService passwordResetTokenService;

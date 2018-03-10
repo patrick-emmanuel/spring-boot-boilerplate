@@ -7,10 +7,12 @@ package com.springboilerplate.springboilerplate.app.user;
         import com.springboilerplate.springboilerplate.app.userRole.UserRole;
         import com.springboilerplate.springboilerplate.app.userRole.UserRoleRepository;
         import com.springboilerplate.springboilerplate.exceptions.RoleDoesNotExistException;
+        import org.apache.lucene.analysis.da.DanishAnalyzer;
         import org.springframework.beans.factory.annotation.Autowired;
         import org.springframework.security.crypto.password.PasswordEncoder;
         import org.springframework.stereotype.Service;
 
+        import java.util.Date;
         import java.util.Optional;
 
 
@@ -42,6 +44,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public void changeUserPassword(User user, PasswordDto passwordDto){
         user.setPassword(passwordDto.getNewPassword());
+        user.setLastPasswordResetDate(new Date());
         userRepository.save(user);
     }
 

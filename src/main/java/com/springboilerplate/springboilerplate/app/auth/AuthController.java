@@ -29,7 +29,7 @@ public class AuthController {
     @Autowired
     private CustomUserService customUserService;
 
-    @GetMapping(value = "user")
+    @GetMapping(value = "/user")
     public User getAuthenticatedUser(HttpServletRequest request) {
         String token = request.getHeader(tokenHeader).substring(7);
         logger.info("Retrieved token: '{}'", token);
