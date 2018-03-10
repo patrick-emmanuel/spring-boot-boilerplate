@@ -67,7 +67,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/h2-console/**/**").permitAll()
                 .antMatchers("/auth/**").permitAll()
                 .antMatchers("/users/**").authenticated()
-                .antMatchers("/actuator/**").permitAll()//Add authentication in prod environment
+                .antMatchers("/actuator/**").authenticated()
                 .antMatchers("/v2/api-docs").permitAll()//Add authentication in prod environment
                 .antMatchers("/swagger-resources/**").permitAll()//Add authentication in prod environment
                 .antMatchers(HttpMethod.POST, "/v1/users/register").permitAll()//Add authentication in prod environment
@@ -113,7 +113,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .ignoring()
                 .antMatchers("/h2-console/**/**")//Add authentication for production environment.
-                .antMatchers("/actuator/**")
+                //.antMatchers("/actuator/**")
                 .antMatchers("/v2/api-docs/**")
                 .antMatchers("/swagger-resources/**")
                 .antMatchers("/swagger-ui.html/**");
