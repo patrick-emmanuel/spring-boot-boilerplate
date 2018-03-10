@@ -4,6 +4,7 @@ import com.springboilerplate.app.role.RoleType;
 import com.springboilerplate.app.search.UserSearchService;
 import com.springboilerplate.app.passwordRestToken.PasswordDto;
 import com.springboilerplate.utils.SecurityUtils;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/users")
+@Api(value="User", description="Operations that pertains to managing user operations")
 public class UserController {
 
     private UserService userService;

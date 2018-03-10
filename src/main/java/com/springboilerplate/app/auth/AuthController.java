@@ -3,6 +3,7 @@ package com.springboilerplate.app.auth;
 import com.springboilerplate.app.user.User;
 import com.springboilerplate.security.CustomUserService;
 import com.springboilerplate.security.JwtTokenUtil;
+import io.swagger.annotations.Api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
 
 @RestController
+@Api(value="Authentication", description="Operations that handle user authentication")
 public class AuthController {
 
     private Logger logger = LoggerFactory.getLogger(AuthController.class);

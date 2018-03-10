@@ -2,6 +2,7 @@ package com.springboilerplate.app.passwordRestToken;
 
 import com.springboilerplate.app.user.User;
 import com.springboilerplate.utils.SecurityUtils;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController("/passwordResetToken")
+@Api(value="Reset Password", description="Operations to enable the user replace their password")
 public class PasswordResetTokenController {
 
     private PasswordResetTokenService passwordResetTokenService;
